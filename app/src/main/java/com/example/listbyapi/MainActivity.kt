@@ -18,6 +18,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val Nom = "com.example.tpintent.twoactivities.extra.MESSAGE"
+        const val Genre = "com.example.tpintent.twoactivities.extra.MESSAGE"
+        const val Duree = "com.example.tpintent.twoactivities.extra.MESSAGE"
+    }
     lateinit var recycler : RecyclerView
     private lateinit var adapter: CustomAdapter
     lateinit var offerList: List<Offre>
@@ -65,7 +70,6 @@ class MainActivity : AppCompatActivity() {
             val editor = sharedPref.edit()
             editor.putString("nomfilm", selectedItem?.nomfilm)
             editor.putString("genre", selectedItem?.genre)
-            // editor selected at date and time
             editor.putString("duree", selectedItem?.duree)
             editor.apply()
             favoriteList.add(selectedItem!!)
@@ -73,14 +77,7 @@ class MainActivity : AppCompatActivity() {
             println(it)
         }
         btnAfficheFavoris.setOnClickListener{
-            val sharedPref = getSharedPreferences("myPref", MODE_PRIVATE)
-            val nomfilm = sharedPref.getString("nomfilm", "")
-            val genre = sharedPref.getString("genre", "")
-            val duree = sharedPref.getString("duree", "")
             val intent = Intent(this, MainActivity2::class.java)
-            intent.putExtra("nomfilm", nomfilm)
-            intent.putExtra("genre", genre)
-            intent.putExtra("duree", duree)
             startActivity(intent)
             println("test")
         }
