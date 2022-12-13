@@ -29,17 +29,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         btnMarqFavoris = findViewById(R.id.fav)
         btnAfficheFavoris = findViewById(R.id.showFav)
+
         recycler = findViewById(R.id.my_recycler_view)
         recycler.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         offerList=ArrayList()
+        var favoriteList = ArrayList<Offre>()
         adapter = CustomAdapter(offerList)
         recycler.adapter = adapter
 
         adapter.onItemClick = {
             selectedItem = it
-
-            // sharedPereferences
-
         }
          val scope = CoroutineScope(Dispatchers.Main)
          scope.launch {
@@ -69,6 +68,7 @@ class MainActivity : AppCompatActivity() {
             // editor selected at date and time
             editor.putString("duree", selectedItem?.duree)
             editor.apply()
+            favoriteList.add(selectedItem!!)
             Toast.makeText(this,"Favoris sauvegardés",Toast.LENGTH_SHORT).show()
             println(it)
         }
@@ -84,57 +84,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             println("test")
         }
-
-        /*delete.setOnClickListener{
-            if (selectedItem!=null){
-                    val scope = CoroutineScope(Dispatchers.Main)
-                    scope.launch {
-                        try{
-                            val response = Apiclient.apiService.deleteOffer(selectedItem!!.id!!)
-                            offerList.removeAt(offerList.indexOf(selectedItem!!))
-                            adapter.notifyDataSetChanged()
-                            selectedItem = null
-                        } catch (e: Exception) {
-                            Log.e("Error",e.message.toString())
-                        }
-                    }
-
-                }
-            }
-        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            val scope = CoroutineScope(Dispatchers.Main)
-            scope.launch {
-                try{
-                    val response = Apiclient.apiService.getOffers()
-                    if (response.isSuccessful && response.body() != null) {
-                        Log.i("Success",response.body().toString())
-                        offerList.clear()
-                        offerList.addAll(response.body()!!)
-                        adapter.notifyDataSetChanged()
-
-                    }else{
-                        Log.e("Error",response.message())
-                    }
-                } catch (e: Exception) {
-                    Log.e("Error",e.message.toString())
-                }
-            }
-        }
-        add.setOnClickListener{
-            intent = android.content.Intent(this,addFormActicity::class.java)
-            resultLauncher.launch(intent)
-        }
-        update.setOnClickListener{
-            intent = android.content.Intent(this,addFormActicity::class.java)
-            intent.putExtra("id",selectedItem!!.id)
-            intent.putExtra("intitule",selectedItem!!.intitulé)
-            intent.putExtra("specialité",selectedItem!!.specialité)
-            intent.putExtra("société",selectedItem!!.société)
-            intent.putExtra("nbpostes",selectedItem!!.nbpostes)
-            intent.putExtra("pays",selectedItem!!.pays)
-            resultLauncher.launch(intent)
-        }*/
-
 
 
     }
